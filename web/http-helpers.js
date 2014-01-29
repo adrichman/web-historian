@@ -10,10 +10,29 @@ exports.headers = headers = {
   'Content-Type': "text/html"
 };
 
-exports.serveAssets = function(res, asset) {
-  // Write some code here that helps serve up your static files!
-  // (Static files are things like html (yours or archived from others...), css, or anything that doesn't change often.)
+exports.serveAssets = function(res, asset, type) {
+  res.writeHead(200, {'Content-Type': type});
+  res.end(asset);
 };
 
+exports.route = function(req, res){
+  if (req.url === '/' || req.url === '/index.html'){
+    var html = fs.readFileSync('public/index.html', 'utf8');
+    var type = 'text/html';
+  } 
+  if (req.url === '/styles.css'){
+    var html = fs.readFileSync('public/styles.css', 'utf8');
+    var type = 'text/css';
+  } 
+  if (req.url === '/app.js'){
+    var html = fs.readFileSync('public/app.js', 'utf8');
+    var type = 'text/javascript';
+  } 
+  if (req.url === '/jquery.min.js'){
+    var html = fs.readFileSync('bower_components/jquery/jquery.min.js', 'utf8');
+    var type = 'text/javascript';
+  } 
+  this.serveAssets(res, html, type);
+}
 // As you progress, keep thinking about what helper functions you can put here!
 
