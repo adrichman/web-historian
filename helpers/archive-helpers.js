@@ -1,5 +1,6 @@
 var fs = require('fs');
 var path = require('path');
+var _ = require('underscore');
 
 /* You will need to reuse the same paths many times over in the course of this sprint.
   Consider calling this function in `request-handler.js` and passing in the necessary
@@ -23,20 +24,34 @@ exports.initialize = function(pathsObj){
   }
 };
 
+exports.listArray = {
+  'list' : []
+}
 // The following function names are provided to you to suggest how you might
 // modularize your code. Keep it clean!
 
 exports.readListOfUrls = function(list, cb){
-  console.log(list + " " + cb);
-  list = list || this.paths.list;
+  var self = this;
   fs.readFile(list, 'utf8', function(err, fileList){
-    fileList = fileList.split('\n');
-    console.log(fileList);
-    cb.call(this, fileList);
+    self.listArray.list = fileList.split('\n');
+    console.log("READING LIST OF URLS: " + self.listArray.list);
+    cb(self.listArray.list);
   });
 };
 
-exports.isUrlInList = function(){
+exports.isUrlInList = function(url, cb){
+  var self = this;
+  console.log("CHECKING FOR URL IN LIST");
+  console.log("url: " + url);
+ 
+  return self.readListOfUrls(self.paths.list, function(arg){
+    console.log("list: " + arg);
+    var containsUrl = _.contains(arg, url);
+    console.log("IS IN LIST: " + containsUrl);
+    cb(containsUrl, arg, url);
+  });
+  // console.log('readList: ' + readList);
+  // return readList;
 };
 
 exports.addUrlToList = function(){

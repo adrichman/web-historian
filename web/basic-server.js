@@ -2,6 +2,8 @@ var http = require("http");
 var handler = require("./request-handler");
 var httpHelper = require("./http-helpers");
 var fs = require("fs");
+var _ = require('underscore');
+
 
 var port = 8080;
 var ip = "127.0.0.1";

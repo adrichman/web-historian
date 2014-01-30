@@ -4,6 +4,7 @@ var fs = require('fs');
 var httpHelper = require("./http-helpers");
 
 exports.handleRequest = function (req, res, corsHeaders) {
+  console.log(req.method);
   if (req.method === "OPTIONS"){
     corsHeaders['Content-Type'] = "text/plain";
     res.writeHead(200, corsHeaders);

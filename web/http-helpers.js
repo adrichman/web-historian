@@ -13,6 +13,7 @@ exports.headers = headers = {
 exports.serveAssets = function(res, code, asset, type) {
   res.writeHead(code, type);
   res.end(asset);
+  console.log('ended');
 };
 
 exports.route = function(req, res, type){
@@ -42,12 +43,20 @@ exports.route = function(req, res, type){
     });
   } else
   if (req.url.match(/\/www/)){
-    var site = req.url;
+    var site = req.url.substring(1);
     console.log("THIS IS THE SITE I WANT TO MATCH: " + site);
-    fs.readFile(archive.paths['archivedSites'] + "/" + site , 'utf8', function(err,html){
-      type = {'Content-Type': 'text/html'};
-      self.serveAssets(res, 200, html, type);    
-    });
+    archive.isUrlInList(site, function(containsUrl, list, url){ 
+      if (containsUrl === true){
+        console.log('IT IS IN THE LIST');
+        fs.readFile(archive.paths.archivedSites + "/" + url , 'utf8', function(err,html){
+          console.log(html);
+          type = {'Content-Type': 'text/html'};
+          self.serveAssets(res, 200, html, type);    
+        });    
+      } else {
+        self.serveAssets(res, 200);    
+      }
+    })
   } else {
     this.serveAssets(res, 404);
   }
