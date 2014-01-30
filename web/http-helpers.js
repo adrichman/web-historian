@@ -49,12 +49,12 @@ exports.route = function(req, res, type){
       if (containsUrl === true){
         console.log('IT IS IN THE LIST');
         fs.readFile(archive.paths.archivedSites + "/" + url , 'utf8', function(err,html){
-          console.log(html);
           type = {'Content-Type': 'text/html'};
           self.serveAssets(res, 200, html, type);    
         });    
       } else {
-        self.serveAssets(res, 200);    
+        archive.addUrlToList(site); 
+        self.serveAssets(res, 200);
       }
     })
   } else {

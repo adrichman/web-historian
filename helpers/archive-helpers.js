@@ -1,3 +1,4 @@
+var http = require('http')
 var fs = require('fs');
 var path = require('path');
 var _ = require('underscore');
@@ -50,16 +51,51 @@ exports.isUrlInList = function(url, cb){
     console.log("IS IN LIST: " + containsUrl);
     cb(containsUrl, arg, url);
   });
-  // console.log('readList: ' + readList);
-  // return readList;
 };
 
-exports.addUrlToList = function(){
+exports.addUrlToList = function(url){
+  var self = this;
+  fs.appendFile(self.paths.list, '\n' + url, function(){
+    self.readListOfUrls(self.paths.list,function(returnList){
+      console.log('ADDED TO LIST');
+      console.log('LIST: ' + returnList);
+      self.isUrlInList(url, function(){
+        self.isURLArchived(url);
+      });
+    });
+  });
 };
 
-exports.isURLArchived = function(){
+exports.isURLArchived = function(url){
+  var self = this;
+  var urlFile = self.paths.archivedSites + "/" + url;
+  fs.readFile(urlFile, function(err, site){
+    if (err){
+      console.log('COULDNT FIND THAT DAMN FILE!');
+      self.downloadUrls(url, urlFile);
+    } else {
+      console.log('WE HAVE THAT SHIT');
+    }
+  });
 };
 
-exports.downloadUrls = function(){
+exports.downloadUrls = function(url, urlFile){
+  var self = this;
+  var data = "";
+  http.get("http://" + url, function(res) {
+    console.log("Got response: " + res.statusCode);
+    res.on('data', function(resData){
+      data += resData;
+      fs.writeFile(urlFile, data, 'utf8', function(err){
+        if (err){
+          console.log('I DIDNT WRITE');
+        } else {
+          console.log('I DOWNLOADED.\n' + data);
+        }
+      });
+    });
+  }).on('error', function(e) {
+    console.log("Got error: " + e.message);
+  });
 };
 
