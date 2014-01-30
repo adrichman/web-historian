@@ -6,8 +6,9 @@ var fs = require("fs");
 var port = 8080;
 var ip = "127.0.0.1";
 var server = http.createServer(function(req,res){
-  httpHelper.route(req, res);
-  handler.handleRequest;
+  handler.handleRequest(req,res, httpHelper.headers);
+  console.log("serving request for: " + req.url);
+  console.log("serving response: " + JSON.stringify(res));
 });
 console.log("Listening on http://" + ip + ":" + port);
 server.listen(port, ip);

@@ -36,6 +36,7 @@ exports.Response = function() {
   }
   this.end = function(data) {
     console.log("Response.end called.");
+    console.log("data: " + data);
     self._ended = true;
     self._data = data;
   }

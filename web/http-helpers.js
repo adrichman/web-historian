@@ -10,29 +10,49 @@ exports.headers = headers = {
   'Content-Type': "text/html"
 };
 
-exports.serveAssets = function(res, asset, type) {
-  res.writeHead(200, {'Content-Type': type});
+exports.serveAssets = function(res, code, asset, type) {
+  res.writeHead(code, type);
   res.end(asset);
 };
 
-exports.route = function(req, res){
+exports.route = function(req, res, type){
+  var self = this;
   if (req.url === '/' || req.url === '/index.html'){
-    var html = fs.readFileSync('public/index.html', 'utf8');
-    var type = 'text/html';
-  } 
+    fs.readFile(__dirname + '/public/index.html', 'utf8', function(err,html){
+      type = {'Content-Type': 'text/html'};
+      self.serveAssets(res, 200, html, type);
+    });
+  } else
   if (req.url === '/styles.css'){
-    var html = fs.readFileSync('public/styles.css', 'utf8');
-    var type = 'text/css';
-  } 
+    fs.readFile('public/styles.css', 'utf8', function(err,html){
+      type = {'Content-Type': 'text/css'};
+      self.serveAssets(res, 200, html, type);
+    });
+  } else 
   if (req.url === '/app.js'){
-    var html = fs.readFileSync('public/app.js', 'utf8');
-    var type = 'text/javascript';
-  } 
+    fs.readFile('public/app.js', 'utf8', function(err,html){
+      type = {'Content-Type': 'text/javascript'};
+      self.serveAssets(res, 200, html, type);  
+    });
+  } else
   if (req.url === '/jquery.min.js'){
-    var html = fs.readFileSync('bower_components/jquery/jquery.min.js', 'utf8');
-    var type = 'text/javascript';
-  } 
-  this.serveAssets(res, html, type);
+    fs.readFile('bower_components/jquery/jquery.min.js', 'utf8', function(err,html){
+      type = {'Content-Type': 'text/javascript'};
+      self.serveAssets(res, 200, html, type);    
+    });
+  } else
+  if (req.url.match(/\/www/)){
+    var site = req.url;
+    console.log("THIS IS THE SITE I WANT TO MATCH: " + site);
+    fs.readFile(archive.paths['archivedSites'] + "/" + site , 'utf8', function(err,html){
+      type = {'Content-Type': 'text/html'};
+      self.serveAssets(res, 200, html, type);    
+    });
+  } else {
+    this.serveAssets(res, 404);
+  }
+
+  
 }
 // As you progress, keep thinking about what helper functions you can put here!
 
