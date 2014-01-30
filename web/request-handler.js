@@ -4,7 +4,6 @@ var fs = require('fs');
 var httpHelper = require("./http-helpers");
 
 exports.handleRequest = function (req, res, corsHeaders) {
-  console.log(req.method);
   if (req.method === "OPTIONS"){
     corsHeaders['Content-Type'] = "text/plain";
     res.writeHead(200, corsHeaders);
@@ -14,14 +13,12 @@ exports.handleRequest = function (req, res, corsHeaders) {
     httpHelper.route(req, res);
   } 
   else if (req.method === 'POST'){
-    console.log('ITS TRYING TO POST, MAN!!')
     var siteToArchive = "";
     req.on('data', function (data) {
       siteToArchive += data;
     });
     req.on('end', function() {
       fs.appendFile(archive.paths['list'], siteToArchive.substring(4) + "\n", 'utf8', function(){
-        console.log("Sites.txt updated with: " + siteToArchive);
         httpHelper.serveAssets(res,302);
       });
     });

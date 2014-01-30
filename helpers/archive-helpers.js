@@ -35,20 +35,15 @@ exports.readListOfUrls = function(list, cb){
   var self = this;
   fs.readFile(list, 'utf8', function(err, fileList){
     self.listArray.list = fileList.split('\n');
-    console.log("READING LIST OF URLS: " + self.listArray.list);
     cb(self.listArray.list);
   });
 };
 
 exports.isUrlInList = function(url, cb){
   var self = this;
-  console.log("CHECKING FOR URL IN LIST");
-  console.log("url: " + url);
  
   return self.readListOfUrls(self.paths.list, function(arg){
-    console.log("list: " + arg);
     var containsUrl = _.contains(arg, url);
-    console.log("IS IN LIST: " + containsUrl);
     cb(containsUrl, arg, url);
   });
 };
@@ -57,8 +52,6 @@ exports.addUrlToList = function(url){
   var self = this;
   fs.appendFile(self.paths.list, '\n' + url, function(){
     self.readListOfUrls(self.paths.list,function(returnList){
-      console.log('ADDED TO LIST');
-      console.log('LIST: ' + returnList);
       self.isUrlInList(url, function(){
         self.isURLArchived(url);
       });
@@ -71,10 +64,8 @@ exports.isURLArchived = function(url){
   var urlFile = self.paths.archivedSites + "/" + url;
   fs.readFile(urlFile, function(err, site){
     if (err){
-      console.log('COULDNT FIND THAT DAMN FILE!');
+      console.log('COULDNT FIND THAT FILE!');
       self.downloadUrls(url, urlFile);
-    } else {
-      console.log('WE HAVE THAT SHIT');
     }
   });
 };
@@ -83,14 +74,11 @@ exports.downloadUrls = function(url, urlFile){
   var self = this;
   var data = "";
   http.get("http://" + url, function(res) {
-    console.log("Got response: " + res.statusCode);
     res.on('data', function(resData){
       data += resData;
       fs.writeFile(urlFile, data, 'utf8', function(err){
         if (err){
           console.log('I DIDNT WRITE');
-        } else {
-          console.log('I DOWNLOADED.\n' + data);
         }
       });
     });
