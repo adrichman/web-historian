@@ -30,6 +30,12 @@ exports.route = function(req, res, type){
       self.serveAssets(res, 200, html, type);
     });
   } else 
+  if (req.url === '/bootstrap-basic.css'){
+    fs.readFile('public/bootstrap-basic.css', 'utf8', function(err,html){
+      type = {'Content-Type': 'text/css'};
+      self.serveAssets(res, 200, html, type);
+    });
+  } else 
   if (req.url === '/app.js'){
     fs.readFile('public/app.js', 'utf8', function(err,html){
       type = {'Content-Type': 'text/javascript'};
@@ -53,8 +59,11 @@ exports.route = function(req, res, type){
           self.serveAssets(res, 200, html, type);    
         });    
       } else {
-        archive.addUrlToList(site); 
-        self.serveAssets(res, 200);
+        archive.addUrlToList(site);
+        fs.readFile(__dirname + '/public/sorry.html', 'utf8', function(err,html){
+          type = {'Content-Type': 'text/html'};
+          self.serveAssets(res, 200, html, type);
+        });
       }
     })
   } else {
