@@ -2,7 +2,6 @@ var path = require('path');
 var archive = require('../helpers/archive-helpers');
 var fs = require('fs');
 var httpHelper = require("./http-helpers");
-// require more modules/folders here!
 
 exports.handleRequest = function (req, res, corsHeaders) {
   if (req.method === "OPTIONS"){
@@ -29,6 +28,5 @@ exports.handleRequest = function (req, res, corsHeaders) {
   else {
     res.end(404);
   }
-  // res.end(archive.paths.list);
 };
 
