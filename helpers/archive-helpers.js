@@ -59,13 +59,20 @@ exports.addUrlToList = function(url){
   });
 };
 
-exports.isURLArchived = function(url){
+exports.isURLArchived = function(url, cb){
   var self = this;
+  self.found = false;
   var urlFile = self.paths.archivedSites + "/" + url;
-  fs.readFile(urlFile, function(err, site){
+  fs.readFile(urlFile, 'utf8', function(err, data){
     if (err){
-      console.log('COULDNT FIND THAT FILE!');
+      console.log('COULDNT FIND THAT FILE! ' + err);
+      self.found = false;
       self.downloadUrls(url, urlFile);
+    } else { 
+      self.found = true;
+      if(cb) {
+        cb(self.found);
+      }
     }
   });
 };

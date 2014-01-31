@@ -51,18 +51,28 @@ exports.route = function(req, res, type){
     var site = req.url.substring(1);
     archive.isUrlInList(site, function(containsUrl, list, url){ 
       if (containsUrl === true){
-        fs.readFile(archive.paths.archivedSites + "/" + url , 'utf8', function(err,html){
-          type = {'Content-Type': 'text/html'};
-          self.serveAssets(res, 200, html, type);    
-        });    
+        archive.isURLArchived(url, function(bool){
+          if (bool){
+            fs.readFile(archive.paths.archivedSites + "/" + url , 'utf8', function(err,html){
+              type = {'Content-Type': 'text/html'};
+              self.serveAssets(res, 302, html, type);
+            })
+          } else {
+            console.log(bool);
+            fs.readFile(__dirname + '/public/loading.html', 'utf8', function(err,html){
+              type = {'Content-Type': 'text/html'};
+              self.serveAssets(res, 200, html, type);
+            });
+          }
+        });
       } else {
         archive.addUrlToList(site);
-        fs.readFile(__dirname + '/public/sorry.html', 'utf8', function(err,html){
+        fs.readFile(__dirname + '/public/loading.html', 'utf8', function(err,html){
           type = {'Content-Type': 'text/html'};
           self.serveAssets(res, 200, html, type);
         });
       }
-    })
+    });
   } else {
     this.serveAssets(res, 404);
   }
