@@ -17,4 +17,15 @@ www.nytimes.com
 www.nytimes.com?gwh=CD48AC85EF293FF4F3413561265DB237&gwt=pay
 www.nfl.com
 www.cheerios.com
-www.instagram.com
+www.instagram.comwww.adamrichman.com
+
+www.cnn.com
+.element/ssi/www/breaking_news/3.0/banner.html?&csiID=csi1
+.element/ssi/www/breaking_news/3.0/bootstrap-basic.css
+.element/ssi/www/breaking_news/3.0/styles.css
+.element/ssi/www/breaking_news/3.0/jquery.min.js
+.element/ssi/www/breaking_news/3.0/app.jswww.cnn.com
+www.hackreactor.com
+t=View&data=%7B%22url%22%3A%22%2Fwww.hackreactor.com%22%2C%22viewportInnerHeight%22%3A933%2C%22viewportInnerWidth%22%3A1676%2C%22screenHeight%22%3A1050%2C%22screenWidth%22%3A1680%2C%22userAgent%22%3A%22Mozilla%2F5.0%20(Macintosh%3B%20Intel%20Mac%20OS%20X%2010_9_2)%20AppleWebKit%2F537.36%20(KHTML%2C%20like%20Gecko)%20Chrome%2F35.0.1916.153%20Safari%2F537.36%22%2C%22referrer%22%3A%22%22%2C%22pixelRatio%22%3A1%2C%22title%22%3A%22Hack%20Reactor%20-%20The%20CS%20Degree%20for%20the%2021st%20Century%22%2C%22collectionId%22%3A%22528bb503e4b009fd592fe6a5%22%2C%22websiteId%22%3A%22522a22cbe4b04681b0bff826%22%2C%22templateId%22%3A%22522a22cce4b04681b0bff832%22%7D
+
+www.foxnews.com

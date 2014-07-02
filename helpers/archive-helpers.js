@@ -1,13 +1,24 @@
-var http = require('http')
-var fs = require('fs');
-var path = require('path');
-var _ = require('underscore');
+var http  = require('http')
+var fs    = require('fs');
+var path  = require('path');
+var _     = require('underscore');
+var mysql = require('mysql');
 
-/* You will need to reuse the same paths many times over in the course of this sprint.
-  Consider calling this function in `request-handler.js` and passing in the necessary
-  directories/files. This way, if you move any files, you'll only need to change your
-  code in one place! Feel free to customize it in any way you wish.
-*/
+var connection = mysql.createConnection({
+  socketPath     : '/var/mysql/mysql.sock',
+  user     : 'root',
+  password : 'localhost',
+  database : 'hr_web_historian'
+});
+
+connection.query('SELECT * from sites', function(err, rows) {
+  console.log(rows);
+  console.log(err);
+});
+connection.end(function(err) {
+  // The connection is terminated now
+});
+
 
 exports.paths = {
   'siteAssets' : path.join(__dirname, '../web/public'),
@@ -88,9 +99,9 @@ exports.downloadUrls = function(url, urlFile){
           console.log('I DIDNT WRITE');
         }
       });
+
     });
   }).on('error', function(e) {
     console.log("Got error: " + e.message);
   });
 };
-
